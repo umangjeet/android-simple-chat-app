@@ -1,5 +1,6 @@
 package com.agilefaqs.chatapp;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -101,16 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         protected void onPostExecute(Boolean status) {
-                            if (status) {
-                                messages.add(messageInput.getText().toString());
-                                messagesAdaptor.notifyDataSetChanged();
-                                messagesList.scrollToPosition(messagesAdaptor.getItemCount()-1);
-                                downloadMessages();
-                                messageInput.setText("");
-                                Toast.makeText(MainActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, "Message send failed", Toast.LENGTH_SHORT).show();
-                            }
+                            messageSent(status, messageInput);
                         }
                     }.execute(urlConnection);
                 } catch (Exception e) {
@@ -126,6 +118,26 @@ public class MainActivity extends AppCompatActivity {
                 downloadMessages();
             }
         }, SECONDS.toMillis(1), SECONDS.toMillis(10));
+    }
+
+    private boolean messageSent(boolean status, TextView messageInput)
+    {
+        if (status) {
+            boolean messageAdded = messages.add(messageInput.getText().toString());
+            messagesAdaptor.notifyDataSetChanged();
+            messagesList.scrollToPosition(messagesAdaptor.getItemCount() - 1);
+            downloadMessages();
+            messageInput.setText("");
+            showConfirmationToast("Message sent", this);
+            return messageAdded;
+        }
+        showConfirmationToast("Message send failed", this);
+        return  false;
+    }
+
+    private void showConfirmationToast(String confirmationMessage, Context ctx)
+    {
+        Toast.makeText(ctx, confirmationMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
