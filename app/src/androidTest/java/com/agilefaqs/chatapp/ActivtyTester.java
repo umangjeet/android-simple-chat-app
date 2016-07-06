@@ -29,8 +29,15 @@ public class ActivtyTester extends ActivityInstrumentationTestCase2<MainActivity
 
     @SmallTest
     public void testSendBtnTest() {
-        send.setText("hello how are... ");
+        mainAct.runOnUiThread(uiRunner);
         assertTrue("send button unfrozen", send.isEnabled());
     }
+
+    private Runnable uiRunner = new Runnable() {
+        @Override
+        public void run() {
+            send.setText("hello how are... ");
+        }
+    };
 
 }
