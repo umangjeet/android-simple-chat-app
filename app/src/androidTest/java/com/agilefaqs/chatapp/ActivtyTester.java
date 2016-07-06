@@ -2,6 +2,7 @@ package com.agilefaqs.chatapp;
 
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.Button;
 
 import com.confengine.chatapp.R;
@@ -16,13 +17,20 @@ public class ActivtyTester extends ActivityInstrumentationTestCase2<MainActivity
         super(MainActivity.class);
         setName(name);
     }
-    
+
     Button send;
-    MainActivity mainAct = getActivity();
+    MainActivity mainAct;
 
     protected void setUp() throws Exception {
         send = (Button) getActivity().findViewById(R.id.sendButton);
+        mainAct = getActivity();
         super.setUp();
+    }
+
+    @SmallTest
+    public void testSendBtnTest() {
+        send.setText("hello how are... ");
+        assertTrue("send button unfrozen", send.isEnabled());
     }
 
 }
