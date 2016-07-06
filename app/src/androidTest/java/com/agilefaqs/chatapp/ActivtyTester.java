@@ -12,18 +12,16 @@ import com.confengine.chatapp.R;
 
 public class ActivtyTester extends ActivityInstrumentationTestCase2<MainActivity> {
 
-
-    public ActivtyTester(Class name) {
-        super(name);
+    public ActivtyTester(String name) {
+        super(MainActivity.class);
+        setName(name);
     }
-
-
+    
     Button send;
     MainActivity mainAct = getActivity();
 
     protected void setUp() throws Exception {
         send = (Button) getActivity().findViewById(R.id.sendButton);
-        mainAct = getActivity();
         super.setUp();
     }
 
